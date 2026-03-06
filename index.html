@@ -695,9 +695,23 @@
     0%, 100% { opacity: 0.6; text-shadow: 0 0 5px var(--neon-pink); }
     50% { opacity: 1; text-shadow: 0 0 15px var(--neon-pink); }
 }
+
+/* ===== DISABLE TEXT SELECTION ===== */
+body, .app-container, .cyber-header, .cyber-section, .cyber-btn, 
+.grid-cell, .prediction-panel, .action-panel, .stat-item,
+.cyber-grid, .prediction-content, .stats-grid, .cyber-action-btn,
+.loading-overlay, .loading-text, .prediction-title, .recommendation-badge,
+.section-title, .cyber-buttons, .stat-value, .stat-label {
+    -webkit-user-select: none;  /* Safari */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* IE/Edge */
+    user-select: none;          /* Standard */
+    -webkit-touch-callout: none; /* iOS Safari */
+}
+
     </style>
 </head>
-<body>
+<body onselectstart="return false" oncopy="return false" oncut="return false" oncontextmenu="return false">
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="cyber-loader"></div>
@@ -771,6 +785,50 @@
     </div>
 
     <script>
+    // ===== DISABLE COPY/CUT/RIGHT-CLICK =====
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Prevent context menu (right-click)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    }, { passive: false });
+
+    // Prevent copy events
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        return false;
+    }, { passive: false });
+
+    // Prevent cut events
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        return false;
+    }, { passive: false });
+
+    // Prevent drag start
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    }, { passive: false });
+
+    // Prevent keyboard shortcuts (Ctrl+C, Ctrl+A, Ctrl+X, Ctrl+S, Ctrl+P)
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+            // Key codes: 67=C, 65=A, 88=X, 83=S, 80=P
+            if ([67, 65, 88, 83, 80].includes(e.keyCode)) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    }, { passive: false });
+
+    // Prevent text selection via mouse
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    }, { passive: false });
+});
     //JINA
     const PLAYER_NAME = "VIP USER"; 
 
@@ -1337,6 +1395,8 @@
 
     // === INITIALIZE GAME ===
     document.addEventListener('DOMContentLoaded', initGame);
+    
+    
 </script>
 </body>
 </html>
